@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+{% block title %}Connexion admin — Vs & Vuslky{% endblock %}
+{% block content %}
+<section class="login-wrap">
+  <div class="eyebrow"><span class="pulse"></span> ACCÈS RESTREINT</div>
+  <h1 class="small-title">PANEL <em>ADMIN</em></h1>
+  <p class="subtitle">Connecte-toi pour gérer les bases et les demandes de retrait.</p>
+  <form method="post" class="panel-form">
+    <label>Nom d’utilisateur<input name="username" autocomplete="username" required></label>
+    <label>Mot de passe<input type="password" name="password" autocomplete="current-password" required></label>
+    <button class="full-button" type="submit">OUVRIR LA SESSION ↗</button>
+  </form>
+  <p class="hint">Le mot de passe n’est jamais affiché à l’écran.</p>
+</section>
+{% endblock %}

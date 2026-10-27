@@ -1,0 +1,53 @@
+{% extends "base.html" %}
+{% block title %}Recherche — Vs & Vuslky{% endblock %}
+{% block content %}
+<section class="hero-banner">
+  <div class="hero-copy">
+    <div class="eyebrow"><span class="pulse"></span> ESPACE DE RECHERCHE LOCAL</div>
+    <h1>Vs <em>&amp; Vuslky</em></h1>
+    <p>Une recherche claire, rapide et maîtrisée dans les fichiers que tu es autorisé à utiliser.</p>
+    <div class="hero-pills"><span>✦ Simple</span><span>◈ Local</span><span>⌁ Confidentialité</span></div>
+  </div>
+  <div class="hero-orb" aria-hidden="true"><span>V</span></div>
+</section>
+
+<section class="search-panel">
+  <div class="panel-heading">
+    <div class="heading-icon">⌕</div>
+    <div><div class="eyebrow">AFFINER LES CRITÈRES</div><h2>Recherche d’informations</h2><p class="muted">Tu peux remplir un seul champ ou en combiner plusieurs.</p></div>
+  </div>
+  <form class="criteria-form" action="{{ url_for('search') }}" method="post">
+    <label class="input-card"><span class="input-icon">♙</span><span class="input-copy"><span>Prénom</span><input name="prenom" value="{{ criteria.prenom }}" placeholder="Ex. Thomas" autocomplete="off"></span></label>
+    <label class="input-card"><span class="input-icon">♙</span><span class="input-copy"><span>Nom</span><input name="nom" value="{{ criteria.nom }}" placeholder="Ex. Dupont" autocomplete="off"></span></label>
+    <label class="input-card"><span class="input-icon">▦</span><span class="input-copy"><span>Année</span><input name="annee" value="{{ criteria.annee }}" placeholder="Ex. 1990" inputmode="numeric" autocomplete="off"></span></label>
+    <label class="input-card"><span class="input-icon">⌖</span><span class="input-copy"><span>Ville</span><input name="ville" value="{{ criteria.ville }}" placeholder="Ex. Paris" autocomplete="off"></span></label>
+    <label class="input-card"><span class="input-icon">⌖</span><span class="input-copy"><span>Code postal</span><input name="code_postal" value="{{ criteria.code_postal }}" placeholder="Ex. 75000" autocomplete="off"></span></label>
+    <label class="input-card"><span class="input-icon">#</span><span class="input-copy"><span>Référence / n° de dossier</span><input name="reference" value="{{ criteria.reference }}" placeholder="Ex. REF-001" autocomplete="off"></span></label>
+    <div class="form-actions"><button class="full-button" type="submit"><span>⌕</span> Lancer la recherche <span class="button-arrow">↗</span></button><a class="reset-link" href="{{ url_for('index') }}">Réinitialiser les critères</a></div>
+  </form>
+  <p class="privacy-note"><span>♢</span> Recherche limitée aux champs non sensibles des fichiers autorisés. Les coordonnées privées et dates de naissance complètes ne sont pas recherchées ni affichées.</p>
+</section>
+
+{% if result_count is not none %}
+<section class="results-section">
+  <div class="section-head"><div><div class="eyebrow">RÉSULTATS</div><h2>Correspondances trouvées</h2></div><span class="count">{{ result_count }} résultat{% if result_count != 1 %}s{% endif %}</span></div>
+  {% if results %}
+    <div class="result-grid">
+      {% for result in results %}
+      <article class="result-card"><div class="result-top"><span class="status-dot"></span><span class="source">{{ result.source }}</span><span class="index">#{{ loop.index }}</span></div>
+        {% for key, value in result.fields %}<div class="field"><span>{{ key }}</span><strong>{{ value }}</strong></div>{% endfor %}
+      </article>
+      {% endfor %}
+    </div>
+  {% else %}
+    <div class="empty"><div class="empty-icon">⌕</div><h3>Aucune correspondance</h3><p>Essaie de modifier un critère ou vérifie les fichiers importés depuis l’espace admin.</p></div>
+  {% endif %}
+</section>
+{% else %}
+<section class="feature-grid">
+  <article class="feature"><span class="feature-icon">✦</span><h3>Recherche multi-critères</h3><p>Combine prénom, nom, année, ville, code postal ou référence pour affiner les résultats.</p></article>
+  <article class="feature"><span class="feature-icon">◈</span><h3>Fichiers locaux</h3><p>Les bases ajoutées par l’administrateur restent dans le dossier DB de cette application.</p></article>
+  <article class="feature"><span class="feature-icon">♡</span><h3>Contrôle des données</h3><p>Une page dédiée permet d’envoyer une demande de retrait à l’administrateur.</p></article>
+</section>
+{% endif %}
+{% endblock %}

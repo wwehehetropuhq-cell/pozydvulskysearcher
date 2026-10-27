@@ -1,0 +1,37 @@
+{% extends "base.html" %}
+{% block title %}Administration — Vs & Vuslky{% endblock %}
+{% block content %}
+<div class="admin-head">
+  <div><div class="eyebrow"><span class="pulse"></span> SESSION ADMINISTRATEUR</div><h1 class="small-title">CENTRE DE <em>CONTRÔLE</em></h1></div>
+  <form method="post" action="{{ url_for('admin_logout') }}"><button class="ghost-button" type="submit">Déconnexion ↗</button></form>
+</div>
+<div class="admin-grid">
+  <section class="panel">
+    <div class="section-head"><div><div class="eyebrow">IMPORT</div><h2>Ajouter une base</h2></div><span class="feature-icon">＋</span></div>
+    <p class="muted">Fichiers autorisés : CSV, JSON, TXT. Maximum 20 Mo par fichier.</p>
+    <form method="post" action="{{ url_for('upload') }}" enctype="multipart/form-data" class="panel-form">
+      <label>Choisir un fichier<input type="file" name="database" accept=".csv,.json,.txt" required></label>
+      <button class="full-button" type="submit">IMPORTER DANS DB ↗</button>
+    </form>
+  </section>
+  <section class="panel">
+    <div class="section-head"><div><div class="eyebrow">STOCKAGE</div><h2>Fichiers DB</h2></div><span class="count">{{ db_files|length }} fichier(s)</span></div>
+    {% if db_files %}
+      <div class="file-list">{% for filename in db_files %}<div class="file-row"><span>▤ {{ filename }}</span><form method="post" action="{{ url_for('delete_db') }}" onsubmit="return confirm('Retirer ce fichier des recherches ?')"><input type="hidden" name="filename" value="{{ filename }}"><button class="text-button danger" type="submit">Retirer</button></form></div>{% endfor %}</div>
+    {% else %}<p class="muted">Aucun fichier importé pour le moment.</p>{% endif %}
+  </section>
+</div>
+<section class="panel wide-panel">
+  <div class="section-head"><div><div class="eyebrow">CONFIDENTIALITÉ</div><h2>Demandes de retrait</h2></div><span class="count">{{ requests_list|length }} demande(s)</span></div>
+  <p class="muted">Les demandes doivent être vérifiées puis traitées manuellement dans les fichiers sources. Changer le statut ne supprime pas automatiquement les données.</p>
+  {% if requests_list %}
+  <div class="table-wrap"><table><thead><tr><th>#</th><th>Nom fourni</th><th>Contact</th><th>Détails</th><th>Date UTC</th><th>Statut</th><th>Mettre à jour</th></tr></thead><tbody>
+  {% for item in requests_list %}<tr><td>{{ item.id }}</td><td>{{ item.name }}</td><td>{{ item.contact }}</td><td>{{ item.details or '—' }}</td><td>{{ item.created_at }}</td><td><span class="tag">{{ item.status }}</span></td><td><form method="post" action="{{ url_for('update_removal', request_id=item.id) }}" class="inline-form"><select name="status"><option {% if item.status == 'À traiter' %}selected{% endif %}>À traiter</option><option {% if item.status == 'En cours' %}selected{% endif %}>En cours</option><option {% if item.status == 'Traité' %}selected{% endif %}>Traité</option></select><button class="text-button" type="submit">OK</button></form></td></tr>{% endfor %}
+  </tbody></table></div>
+  {% else %}<div class="empty compact"><h3>Aucune demande</h3><p>Les demandes envoyées depuis « Se retirer » apparaîtront ici.</p></div>{% endif %}
+</section>
+<section class="panel wide-panel">
+  <div class="section-head"><div><div class="eyebrow">ACTIVITÉ RÉCENTE</div><h2>Journal technique</h2></div></div>
+  {% if logs %}<div class="file-list">{% for item in logs %}<div class="file-row"><span>{{ item.event }}</span><span class="muted">{{ item.created_at }}</span></div>{% endfor %}</div>{% else %}<p class="muted">Aucune activité enregistrée.</p>{% endif %}
+</section>
+{% endblock %}

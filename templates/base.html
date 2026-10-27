@@ -1,0 +1,22 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#04110b">
+  <title>{% block title %}Vs & Vuslky{% endblock %}</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+  <div class="ambient ambient-one"></div><div class="ambient ambient-two"></div><div class="scanlines"></div>
+  <header class="topbar">
+    <a class="brand" href="{{ url_for('index') }}"><span class="brand-mark">V</span><span>Vs <b>&amp;</b> Vuslky</span></a>
+    <nav><a href="{{ url_for('index') }}" {% if request.endpoint in ['index','search'] %}class="active"{% endif %}>⌂ <span>Recherche</span></a><a href="{{ url_for('retrait') }}" {% if request.endpoint == 'retrait' %}class="active"{% endif %}>♡ <span>Retrait de données</span></a><a href="{{ url_for('admin_login') }}" {% if request.endpoint in ['admin_login','admin'] %}class="active"{% endif %}>♙ <span>Espace admin</span></a></nav>
+  </header>
+  <main class="container">
+    {% with messages = get_flashed_messages(with_categories=true) %}{% if messages %}<div class="flash-list">{% for category, message in messages %}<div class="flash {{ category }}">{{ message }}</div>{% endfor %}</div>{% endif %}{% endwith %}
+    {% block content %}{% endblock %}
+  </main>
+  <footer><span class="footer-mark">V</span><span>VS &amp; VUSLKY</span><i></i> Recherche locale contrôlée <i></i> Données autorisées uniquement</footer>
+</body>
+</html>

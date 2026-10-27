@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+{% block title %}Se retirer — Vs & Vuslky{% endblock %}
+{% block content %}
+<section class="login-wrap">
+  <div class="eyebrow"><span class="pulse"></span> CONFIDENTIALITÉ</div>
+  <h1 class="small-title">DEMANDE DE <em>RETRAIT</em></h1>
+  <p class="subtitle">Indique les informations nécessaires pour qu’un administrateur puisse examiner ta demande.</p>
+  <form method="post" class="panel-form">
+    <label>Nom à vérifier<input name="name" maxlength="120" required></label>
+    <label>Moyen de contact<input name="contact" maxlength="200" placeholder="E-mail ou autre contact" required></label>
+    <label>Informations complémentaires<textarea name="details" maxlength="1000" rows="4" placeholder="Précise éventuellement le fichier ou le contexte."></textarea></label>
+    <button class="full-button" type="submit">ENVOYER LA DEMANDE ↗</button>
+  </form>
+  <p class="hint">Cette page enregistre une demande pour traitement manuel ; elle ne supprime pas instantanément les fichiers sources.</p>
+</section>
+{% endblock %}
